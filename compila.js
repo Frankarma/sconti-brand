@@ -3,7 +3,7 @@
 (function (radice) {
   var ANNI = ["2020", "2021", "2022", "2023", "2024", "2025", "2026"];
   // Devono restare uguali a genera_pdf.py (RIGHE_P1, RIGHE_P2, pagine=4 della copia web)
-  var RIGHE_P1 = 30, RIGHE_PAGINA = 37, PAGINE = 4;
+  var RIGHE_P1 = 31, RIGHE_PAGINA = 37, PAGINE = 4;
   var RIGHE_PDF = RIGHE_P1 + (PAGINE - 1) * RIGHE_PAGINA;
   var ORO = [190 / 255, 162 / 255, 100 / 255];
 
@@ -66,9 +66,6 @@
     var form = pdf.getForm();
     var helv = await pdf.embedFont(PDFLib.StandardFonts.Helvetica);
     var elenco = dati.brand.slice(0, RIGHE_PDF);
-
-    ANNI.forEach(function (_, i) { scriviSconto(form, "tutti_" + (i + 1), dati.base.sconti[i]); });
-    if (dati.base.nota) form.getTextField("tutti_note").setText(pulisci(dati.base.nota, 40));
 
     elenco.forEach(function (b, r) {
       var k = String(r + 1).padStart(2, "0");  // brand_01 ... brand_141, come in genera_pdf.py

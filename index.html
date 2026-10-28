@@ -41,9 +41,6 @@
 
   .scheda { background: var(--carta); border-radius: 14px; padding: 10px 10px 10px; margin-top: 8px;
     box-shadow: 0 1px 2px rgba(43,41,38,.04), 0 4px 14px rgba(43,41,38,.04); }
-  .scheda.base { margin-top: 20px; padding: 12px 10px; border: 1px solid #E9DFC8; }
-  .base-tit { font-weight: 600; color: var(--oro-scuro); font-size: 15px; padding: 0 2px; }
-  .base-sub { font-size: 12.5px; color: var(--grigio); font-weight: 300; margin: 1px 0 0; padding: 0 2px; }
 
   .cerca-barra { position: sticky; top: 0; z-index: 4; display: flex; gap: 8px; align-items: center;
     margin: 18px -16px 0; padding: 10px 16px; background: rgba(247,244,238,.9);
@@ -66,15 +63,8 @@
   .scheda.fatta .num { background: var(--oro); color: #fff; }
   .nome { flex: 1; min-width: 0; margin: 0; font-size: 15px; font-weight: 600; letter-spacing: .04em;
     white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-  .nome-input { flex: 1; min-width: 0; border: 0; border-bottom: 1.5px solid var(--linea); border-radius: 0;
-    padding: 4px 2px; font: 600 15px/1.2 "Outfit", system-ui, sans-serif; letter-spacing: .04em;
-    text-transform: uppercase; color: var(--ink); background: transparent; outline: none; }
-  .nome-input::placeholder { text-transform: none; letter-spacing: 0; font-weight: 300; color: var(--grigio-chiaro); }
-  .nome-input:focus { border-bottom-color: var(--oro); }
   .link { flex: none; border: 0; background: none; padding: 6px 4px; font: 400 13px "Outfit", system-ui, sans-serif;
     color: var(--grigio-chiaro); cursor: pointer; }
-  .togli { flex: none; width: 32px; height: 32px; border: 0; border-radius: 9px; background: transparent;
-    color: var(--grigio-chiaro); display: grid; place-items: center; cursor: pointer; }
 
   .anni { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 4px; margin-top: 8px; }
   .cella { position: relative; display: block; border: 1px solid var(--linea); border-radius: 9px;
@@ -93,9 +83,6 @@
   .nota::placeholder { color: var(--grigio-chiaro); font-weight: 300; }
   .nota:focus { box-shadow: 0 0 0 2px rgba(190,162,100,.35); }
 
-  .aggiungi { display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%;
-    margin-top: 14px; padding: 14px; border: 1.5px dashed #D9CFB8; border-radius: 14px; background: transparent;
-    font: 500 15px "Outfit", system-ui, sans-serif; color: var(--oro-scuro); cursor: pointer; }
   .ricomincia { display: block; margin: 26px auto 0; border: 0; background: none; color: var(--grigio-chiaro);
     font: 400 13px "Outfit", system-ui, sans-serif; text-decoration: underline; cursor: pointer; }
 
@@ -143,14 +130,9 @@
   <ul class="intro">
     <li>Ci sono già <b>tutti i brand</b>, in ordine: prima quelli con più prodotti in negozio.</li>
     <li>Sotto l'anno della collezione scrivi lo sconto: <b>basta il numero</b>.</li>
-    <li>Brand lasciato vuoto = vale la regola <b>Tutti gli altri brand</b>. Per «nessuno sconto» scrivi 0.</li>
+    <li>Casella vuota = <b>nessuno sconto</b>.</li>
   </ul>
   <div class="esempio" aria-label="Esempio">Esempio: <b>MAYORAL</b> 2023 <span class="pill" data-t="20">20%</span> 2025 <span class="pill" data-t="10">10%</span></div>
-
-  <section class="scheda base" id="base">
-    <div class="base-tit">Tutti gli altri brand</div>
-    <p class="base-sub">Regola di base: vale per ogni brand che lasci vuoto</p>
-  </section>
 
   <div class="cerca-barra">
     <input class="cerca" id="cerca" type="search" placeholder="Cerca un brand" autocomplete="off" enterkeyhint="search" aria-label="Cerca un brand">
@@ -158,12 +140,7 @@
   </div>
 
   <div id="lista"></div>
-  <p class="vuoto-ricerca" id="nessuno" hidden>Nessun brand trovato. Se manca, aggiungilo qui sotto.</p>
-  <div id="extra"></div>
-  <button class="aggiungi" id="aggiungi" type="button">
-    <svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><path d="M9 3v12M3 9h12" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
-    Manca un brand? Aggiungilo
-  </button>
+  <p class="vuoto-ricerca" id="nessuno" hidden>Nessun brand trovato.</p>
   <button class="ricomincia" id="ricomincia" type="button">Ricomincia da capo</button>
 </main>
 
@@ -207,9 +184,7 @@
   // ---- stato salvato sul telefono (se il browser lo permette) ----
   var stato = null;
   try { stato = JSON.parse(localStorage.getItem(CHIAVE)); localStorage.removeItem("ndp-sconti-brand-v1"); } catch (e) {}
-  if (!stato || !stato.base || !stato.valori || !Array.isArray(stato.extra)) {
-    stato = { base: { sconti: vuoti(), nota: "" }, valori: {}, extra: [] };
-  }
+  if (!stato || !stato.valori) stato = { valori: {} };
   function valoriDi(nome) { return stato.valori[nome] || (stato.valori[nome] = { sconti: vuoti(), nota: "" }); }
   function salva() {
     try { localStorage.setItem(CHIAVE, JSON.stringify(stato)); } catch (e) {}
@@ -230,7 +205,7 @@
   }
   document.querySelectorAll(".esempio .pill").forEach(function (p) { p.style.background = colore(+p.dataset.t); });
   function campiVisibili() {
-    return Array.prototype.filter.call(document.querySelectorAll(".cella input, .nome-input, .nota"),
+    return Array.prototype.filter.call(document.querySelectorAll(".cella input, .nota"),
       function (el) { return el.offsetParent !== null; });
   }
   function avanti(e) {
@@ -286,11 +261,6 @@
     return n;
   }
 
-  // ---- regola di base ----
-  var base = $("base");
-  base.appendChild(griglia(stato.base, null));
-  base.appendChild(campoNota(stato.base, null, true));
-
   // ---- elenco dei brand, gia' in ordine ----
   var schede = [];
   var frammento = document.createDocumentFragment();
@@ -312,36 +282,6 @@
   });
   $("lista").appendChild(frammento);
 
-  // ---- brand aggiunti a mano ----
-  function schedaExtra(dati) {
-    var s = document.createElement("section"); s.className = "scheda";
-    s.innerHTML = '<div class="testa"><span class="num">+</span>' +
-      '<input class="nome-input" type="text" autocapitalize="characters" autocomplete="off" spellcheck="false" enterkeyhint="next" maxlength="28" placeholder="Nome del brand">' +
-      '<button class="togli" type="button" aria-label="Togli questo brand"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M10 11v6M14 11v6M6 7l1 12a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2l1-12M9 7V4h6v3"/></svg></button></div>';
-    var nome = s.querySelector(".nome-input");
-    nome.value = dati.nome;
-    nome.addEventListener("input", function () { dati.nome = nome.value; salva(); });
-    nome.addEventListener("keydown", avanti);
-    s.querySelector(".togli").addEventListener("click", function () {
-      if ((dati.nome.trim() || haDati(dati)) && !confirm("Togliere " + (dati.nome.trim().toUpperCase() || "questo brand") + "?")) return;
-      stato.extra.splice(stato.extra.indexOf(dati), 1);
-      s.remove(); salva();
-    });
-    s.appendChild(griglia(dati, s));
-    s.appendChild(campoNota(dati, s, true));
-    s.classList.toggle("fatta", haDati(dati));
-    return s;
-  }
-  stato.extra.forEach(function (d) { $("extra").appendChild(schedaExtra(d)); });
-  $("aggiungi").addEventListener("click", function () {
-    var d = { nome: "", sconti: vuoti(), nota: "" };
-    stato.extra.push(d);
-    var s = schedaExtra(d);
-    $("extra").appendChild(s); salva();
-    s.scrollIntoView({ behavior: "smooth", block: "center" });
-    s.querySelector(".nome-input").focus({ preventScroll: true });
-  });
-
   // ---- ricerca e filtro "solo compilati" ----
   var soloCompilati = false;
   function filtra() {
@@ -351,7 +291,6 @@
       var ok = (!q || x.chiave.indexOf(q) !== -1) && (!soloCompilati || haDati(stato.valori[x.nome]));
       x.el.hidden = !ok; if (ok) visibili++;
     });
-    base.hidden = !!q || soloCompilati;
     $("nessuno").hidden = visibili > 0 || (!q && !soloCompilati);
   }
   $("cerca").addEventListener("input", filtra);
@@ -374,12 +313,11 @@
     location.reload();
   });
 
-  // ---- cosa si invia: brand compilati nell'ordine dell'elenco, poi quelli aggiunti ----
+  // ---- cosa si invia: i brand compilati, nell'ordine dell'elenco ----
   function compilati() {
-    var lista = BRAND.filter(function (nome) { return haDati(stato.valori[nome]); }).map(function (nome) {
+    return BRAND.filter(function (nome) { return haDati(stato.valori[nome]); }).map(function (nome) {
       return { nome: nome, sconti: stato.valori[nome].sconti, nota: stato.valori[nome].nota };
     });
-    return lista.concat(stato.extra.filter(function (d) { return d.nome.trim() && haDati(d); }));
   }
   function aggiornaStato() {
     var n = compilati().length;
@@ -390,16 +328,14 @@
   aggiornaStato();
 
   function controlla() {
-    var tutti = [stato.base].concat(Object.keys(stato.valori).map(function (k) { return stato.valori[k]; }), stato.extra);
+    var tutti = Object.keys(stato.valori).map(function (k) { return stato.valori[k]; });
     for (var i = 0; i < tutti.length; i++) {
       for (var j = 0; j < ANNI.length; j++) {
         var v = tutti[i].sconti[j], n = numero(v);
         if (v !== "" && (isNaN(n) || n > 100)) return "C'è uno sconto non valido (" + v + "): va da 0 a 100";
       }
     }
-    if (stato.extra.some(function (d) { return haDati(d) && !d.nome.trim(); })) return "Manca il nome di un brand aggiunto";
-    var baseVuota = stato.base.sconti.every(function (s) { return s === ""; });
-    if (!compilati().length && baseVuota) return "Scrivi almeno uno sconto";
+    if (!compilati().length) return "Scrivi almeno uno sconto";
     return "";
   }
 
@@ -426,17 +362,15 @@
     var problema = controlla();
     if (problema) { avviso(problema); return; }
     var n = compilati().length;
-    var conBase = stato.base.sconti.some(function (s) { return s !== ""; });
     $("foglio-sub").textContent = n > NDPSconti.RIGHE_PDF
       ? n + " brand: nel PDF ci stanno i primi " + NDPSconti.RIGHE_PDF + ", il messaggio li contiene tutti."
-      : (n ? n + (n === 1 ? " brand compilato" : " brand compilati") + (conBase ? " più la regola di base." : ".")
-           : "Solo la regola di base.");
+      : n + (n === 1 ? " brand compilato." : " brand compilati.");
     $("velo").classList.add("aperto"); $("foglio").classList.add("aperto");
     // Il PDF si prepara subito: il tasto "Invia il PDF" poi condivide all'istante (iPhone lo richiede)
     filePronto = null;
     $("invia-pdf").disabled = true; $("invia-pdf-tit").textContent = "Preparo il PDF…";
     Promise.all([caricaPdfLib(), fetch("Sconti_per_brand.pdf").then(function (r) { return r.arrayBuffer(); })])
-      .then(function (r) { return NDPSconti.compilaPdf(r[0], r[1], { base: stato.base, brand: compilati() }); })
+      .then(function (r) { return NDPSconti.compilaPdf(r[0], r[1], { brand: compilati() }); })
       .then(function (bytes) {
         filePronto = new File([bytes], nomeFile(), { type: "application/pdf" });
         $("invia-pdf").disabled = false; $("invia-pdf-tit").textContent = "Invia il PDF compilato";
@@ -470,8 +404,7 @@
   }
   $("invia-testo").addEventListener("click", function () {
     var righe = ["*Sconti per brand e anno* (" + NDPSconti.oggi() + ")"];
-    if (stato.base.sconti.some(function (s) { return s !== ""; }) || stato.base.nota.trim()) righe.push(riga("Tutti gli altri brand", stato.base));
-    compilati().forEach(function (b) { righe.push(riga(b.nome.trim().toUpperCase(), b)); });
+    compilati().forEach(function (b) { righe.push(riga(b.nome, b)); });
     window.location.href = "https://wa.me/?text=" + encodeURIComponent(righe.join("\n"));
     chiudiFoglio();
   });
