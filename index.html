@@ -13,15 +13,17 @@
   :root {
     --ink: #2B2926; --grigio: #706B62; --grigio-chiaro: #A8A398; --linea: #E8E3D8;
     --oro: #BEA264; --oro-scuro: #85703F; --lino: #F7F4EE; --carta: #FFFFFF; --errore: #B4473A;
+    --lato: 16px;
   }
   * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-  html { -webkit-text-size-adjust: 100%; }
+  /* scroll-padding: la casella su cui si scrive non finisce sotto la ricerca o la barra Invia */
+  html { -webkit-text-size-adjust: 100%; scroll-padding-top: 76px; scroll-padding-bottom: 104px; }
   body {
     margin: 0; background: var(--lino); color: var(--ink);
     font-family: "Outfit", system-ui, -apple-system, "Segoe UI", sans-serif; font-weight: 400;
     padding-bottom: calc(96px + env(safe-area-inset-bottom));
   }
-  main { max-width: 640px; margin: 0 auto; padding: 28px 16px 24px; }
+  main { max-width: 640px; margin: 0 auto; padding: 28px var(--lato) 24px; }
   [hidden] { display: none !important; }
 
   .sopra { display: flex; align-items: center; gap: 8px; margin: 0 0 10px;
@@ -43,10 +45,10 @@
     box-shadow: 0 1px 2px rgba(43,41,38,.04), 0 4px 14px rgba(43,41,38,.04); }
 
   .cerca-barra { position: sticky; top: 0; z-index: 4; display: flex; gap: 8px; align-items: center;
-    margin: 18px -16px 0; padding: 10px 16px; background: rgba(247,244,238,.9);
+    margin: 18px calc(-1 * var(--lato)) 0; padding: 10px var(--lato); background: rgba(247,244,238,.9);
     -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px); }
   .cerca { flex: 1; min-width: 0; border: 1px solid var(--linea); border-radius: 12px; background: var(--carta);
-    padding: 10px 12px 10px 36px; font: 400 15px "Outfit", system-ui, sans-serif; color: var(--ink); outline: none;
+    padding: 10px 12px 10px 36px; font: 400 16px "Outfit", system-ui, sans-serif; color: var(--ink); outline: none;
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='none' stroke='%23A8A398' stroke-width='1.8' stroke-linecap='round'%3E%3Ccircle cx='7' cy='7' r='5'/%3E%3Cpath d='M11 11l3.5 3.5'/%3E%3C/svg%3E");
     background-repeat: no-repeat; background-position: 12px 50%; -webkit-appearance: none; appearance: none; }
   .cerca:focus { border-color: var(--oro); }
@@ -74,23 +76,27 @@
   .cella.errore { border-color: var(--errore); box-shadow: 0 0 0 3px rgba(180,71,58,.15); }
   .anno { display: block; font-size: 9.5px; font-weight: 500; letter-spacing: .04em; color: var(--grigio); }
   .cella input { width: 100%; border: 0; outline: none; background: transparent; text-align: center; padding: 0;
-    font: 500 15px/1.35 "Outfit", system-ui, sans-serif; color: var(--ink); }
+    font: 500 16px/1.3 "Outfit", system-ui, sans-serif; color: var(--ink); }
   .cella input::placeholder { color: #D6D1C6; font-weight: 300; }
-  @media (min-width: 420px) { .cella input { font-size: 16.5px; } .anno { font-size: 10.5px; } .anni { gap: 6px; } }
+  @media (min-width: 420px) { .cella input { font-size: 17px; } .anno { font-size: 10.5px; } .anni { gap: 6px; } }
+  /* "12,5%" e "100%" nelle caselle strette: piu' piccoli solo a riposo (iPhone ingrandisce solo al tocco, sotto i 16px) */
+  @media (max-width: 419px) { .cella input.lungo:not(:focus) { font-size: 13px; letter-spacing: -.02em; } }
+  @media (max-width: 359px) { :root { --lato: 12px; } .scheda { padding: 9px 8px; } .anni { gap: 3px; } .anno { font-size: 9px; } }
 
   .nota { width: 100%; margin-top: 8px; border: 0; border-radius: 9px; background: var(--lino);
-    padding: 9px 11px; font: 400 14px/1.3 "Outfit", system-ui, sans-serif; color: var(--ink); outline: none; }
+    padding: 9px 11px; font: 400 16px/1.3 "Outfit", system-ui, sans-serif; color: var(--ink); outline: none; }
   .nota::placeholder { color: var(--grigio-chiaro); font-weight: 300; }
   .nota:focus { box-shadow: 0 0 0 2px rgba(190,162,100,.35); }
 
   .ricomincia { display: block; margin: 26px auto 0; border: 0; background: none; color: var(--grigio-chiaro);
     font: 400 13px "Outfit", system-ui, sans-serif; text-decoration: underline; cursor: pointer; }
 
-  .barra { position: fixed; left: 0; right: 0; bottom: 0; z-index: 5;
+  .barra { position: fixed; left: 0; right: 0; bottom: 0; z-index: 5; transition: transform .2s ease, opacity .2s ease;
     padding: 12px 16px calc(12px + env(safe-area-inset-bottom));
     background: rgba(247,244,238,.88); -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px);
     border-top: 1px solid rgba(232,227,216,.9); }
   .barra-in { max-width: 640px; margin: 0 auto; display: flex; align-items: center; gap: 12px; }
+  body.scrivo .barra { transform: translateY(110%); opacity: 0; pointer-events: none; }
   .stato { flex: 1; font-size: 13px; color: var(--grigio); line-height: 1.3; }
   .stato b { color: var(--ink); font-weight: 600; }
   .btn { border: 0; border-radius: 13px; padding: 14px 22px; font: 600 15.5px "Outfit", system-ui, sans-serif;
@@ -179,6 +185,7 @@
 
   function vuoti() { return ANNI.map(function () { return ""; }); }
   function $(id) { return document.getElementById(id); }
+  var puntatoreFine = window.matchMedia && matchMedia("(pointer: fine)").matches;
   function chiave(s) { return String(s).normalize("NFD").replace(/[̀-ͯ]/g, "").toUpperCase(); }
 
   // ---- stato salvato sul telefono (se il browser lo permette) ----
@@ -222,7 +229,10 @@
       var l = document.createElement("label"); l.className = "cella";
       l.innerHTML = '<span class="anno">' + anno + '</span><input type="text" inputmode="decimal" enterkeyhint="next" maxlength="5" placeholder="–" aria-label="Sconto ' + anno + '">';
       var inp = l.querySelector("input");
-      function mostra() { var v = dati.sconti[i]; inp.value = v === "" ? "" : v.replace(".", ",") + "%"; }
+      function mostra() {
+        var v = dati.sconti[i]; inp.value = v === "" ? "" : v.replace(".", ",") + "%";
+        inp.classList.toggle("lungo", inp.value.length > 3);
+      }
       function dipingi() {
         var n = numero(dati.sconti[i]);
         var errato = dati.sconti[i] !== "" && (isNaN(n) || n > 100);
@@ -233,7 +243,9 @@
       }
       inp.addEventListener("focus", function () {
         inp.value = dati.sconti[i];
-        setTimeout(function () { try { inp.select(); } catch (e) {} }, 0);
+        setTimeout(function () {
+          try { if (puntatoreFine) inp.select(); else inp.setSelectionRange(inp.value.length, inp.value.length); } catch (e) {}
+        }, 0);
       });
       inp.addEventListener("blur", mostra);
       inp.addEventListener("input", function () {
@@ -260,6 +272,17 @@
     n.addEventListener("keydown", avanti);
     return n;
   }
+
+  var tScrivo;
+  document.addEventListener("focusin", function (e) {
+    if (e.target.matches("input")) { clearTimeout(tScrivo); document.body.classList.add("scrivo"); }
+  });
+  document.addEventListener("focusout", function () {
+    clearTimeout(tScrivo);
+    tScrivo = setTimeout(function () {
+      if (!document.activeElement || !document.activeElement.matches("input")) document.body.classList.remove("scrivo");
+    }, 120);
+  });
 
   // ---- elenco dei brand, gia' in ordine ----
   var schede = [];
@@ -322,7 +345,7 @@
   function aggiornaStato() {
     var n = compilati().length;
     $("ncomp").textContent = n;
-    $("stato").innerHTML = n ? "<b>" + n + "</b> brand compilat" + (n === 1 ? "o" : "i") + "<br>salvati sul telefono"
+    $("stato").innerHTML = n ? "<b>" + n + "</b> brand compilat" + (n === 1 ? "o" : "i") + "<br>dati salvati sul telefono"
                              : "Compila e premi <b>Invia</b>";
   }
   aggiornaStato();
