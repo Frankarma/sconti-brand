@@ -22,65 +22,86 @@
     padding-bottom: calc(96px + env(safe-area-inset-bottom));
   }
   main { max-width: 640px; margin: 0 auto; padding: 28px 16px 24px; }
+  [hidden] { display: none !important; }
 
   .sopra { display: flex; align-items: center; gap: 8px; margin: 0 0 10px;
     font-size: 11px; font-weight: 500; letter-spacing: .22em; color: var(--oro-scuro); }
   .sopra::before { content: ""; width: 16px; height: 1.5px; background: var(--oro); }
   h1 { margin: 0; font-size: 32px; line-height: 1.08; font-weight: 300; letter-spacing: -.01em; }
   h1 b { font-weight: 600; }
-  .intro { margin: 10px 0 0; color: var(--grigio); font-weight: 300; font-size: 15px; line-height: 1.45; }
+  .intro { margin: 10px 0 0; padding: 0; list-style: none; color: var(--grigio); font-weight: 300; font-size: 14.5px; line-height: 1.45; }
+  .intro li { position: relative; padding-left: 14px; margin-top: 4px; }
+  .intro li::before { content: ""; position: absolute; left: 0; top: .62em; width: 5px; height: 5px; border-radius: 50%; background: var(--oro); }
+  .intro b { color: var(--ink); font-weight: 500; }
   .esempio { display: inline-flex; flex-wrap: wrap; align-items: center; gap: 6px; margin-top: 14px;
     padding: 7px 10px; border-radius: 10px; background: var(--carta); border: 1px dashed var(--linea);
     font-size: 12.5px; color: var(--grigio); }
   .esempio b { color: var(--ink); font-weight: 500; letter-spacing: .04em; }
   .esempio .pill { padding: 2px 7px; border-radius: 6px; color: var(--ink); font-weight: 500; }
 
-  .scheda { background: var(--carta); border-radius: 16px; padding: 14px 14px 12px; margin-top: 14px;
-    box-shadow: 0 1px 2px rgba(43,41,38,.04), 0 6px 20px rgba(43,41,38,.05); }
-  .scheda.base { margin-top: 22px; border: 1px solid #E9DFC8; }
-  .base-tit { font-weight: 600; color: var(--oro-scuro); font-size: 15px; }
-  .base-sub { font-size: 12.5px; color: var(--grigio); font-weight: 300; margin-top: 1px; }
+  .scheda { background: var(--carta); border-radius: 14px; padding: 10px 10px 10px; margin-top: 8px;
+    box-shadow: 0 1px 2px rgba(43,41,38,.04), 0 4px 14px rgba(43,41,38,.04); }
+  .scheda.base { margin-top: 20px; padding: 12px 10px; border: 1px solid #E9DFC8; }
+  .base-tit { font-weight: 600; color: var(--oro-scuro); font-size: 15px; padding: 0 2px; }
+  .base-sub { font-size: 12.5px; color: var(--grigio); font-weight: 300; margin: 1px 0 0; padding: 0 2px; }
 
-  .testa { display: flex; align-items: center; gap: 10px; }
-  .num { flex: none; width: 26px; height: 26px; border-radius: 50%; background: var(--lino);
-    display: grid; place-items: center; font-size: 12px; font-weight: 500; color: var(--grigio); }
-  .nome { flex: 1; min-width: 0; border: 0; border-bottom: 1.5px solid var(--linea); border-radius: 0;
-    padding: 6px 2px; font: 600 17px/1.2 "Outfit", system-ui, sans-serif; letter-spacing: .04em;
+  .cerca-barra { position: sticky; top: 0; z-index: 4; display: flex; gap: 8px; align-items: center;
+    margin: 18px -16px 0; padding: 10px 16px; background: rgba(247,244,238,.9);
+    -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px); }
+  .cerca { flex: 1; min-width: 0; border: 1px solid var(--linea); border-radius: 12px; background: var(--carta);
+    padding: 10px 12px 10px 36px; font: 400 15px "Outfit", system-ui, sans-serif; color: var(--ink); outline: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='none' stroke='%23A8A398' stroke-width='1.8' stroke-linecap='round'%3E%3Ccircle cx='7' cy='7' r='5'/%3E%3Cpath d='M11 11l3.5 3.5'/%3E%3C/svg%3E");
+    background-repeat: no-repeat; background-position: 12px 50%; -webkit-appearance: none; appearance: none; }
+  .cerca:focus { border-color: var(--oro); }
+  .chip { flex: none; border: 1px solid var(--linea); border-radius: 12px; background: var(--carta); color: var(--grigio);
+    padding: 10px 12px; font: 500 13.5px "Outfit", system-ui, sans-serif; cursor: pointer; white-space: nowrap; }
+  .chip b { color: var(--ink); font-weight: 600; }
+  .chip[aria-pressed="true"] { background: var(--ink); border-color: var(--ink); color: #fff; }
+  .chip[aria-pressed="true"] b { color: #fff; }
+  .vuoto-ricerca { text-align: center; color: var(--grigio); font-size: 14px; padding: 26px 10px 6px; }
+
+  .testa { display: flex; align-items: center; gap: 9px; padding: 0 2px; min-height: 28px; }
+  .num { flex: none; min-width: 24px; height: 22px; padding: 0 6px; border-radius: 11px; background: var(--lino);
+    display: grid; place-items: center; font-size: 11px; font-weight: 500; color: var(--grigio); transition: all .2s; }
+  .scheda.fatta .num { background: var(--oro); color: #fff; }
+  .nome { flex: 1; min-width: 0; margin: 0; font-size: 15px; font-weight: 600; letter-spacing: .04em;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .nome-input { flex: 1; min-width: 0; border: 0; border-bottom: 1.5px solid var(--linea); border-radius: 0;
+    padding: 4px 2px; font: 600 15px/1.2 "Outfit", system-ui, sans-serif; letter-spacing: .04em;
     text-transform: uppercase; color: var(--ink); background: transparent; outline: none; }
-  .nome::placeholder { text-transform: none; letter-spacing: 0; font-weight: 300; color: var(--grigio-chiaro); }
-  .nome:focus { border-bottom-color: var(--oro); }
-  .togli { flex: none; width: 36px; height: 36px; border: 0; border-radius: 10px; background: transparent;
+  .nome-input::placeholder { text-transform: none; letter-spacing: 0; font-weight: 300; color: var(--grigio-chiaro); }
+  .nome-input:focus { border-bottom-color: var(--oro); }
+  .link { flex: none; border: 0; background: none; padding: 6px 4px; font: 400 13px "Outfit", system-ui, sans-serif;
+    color: var(--grigio-chiaro); cursor: pointer; }
+  .togli { flex: none; width: 32px; height: 32px; border: 0; border-radius: 9px; background: transparent;
     color: var(--grigio-chiaro); display: grid; place-items: center; cursor: pointer; }
-  .togli:active { background: var(--lino); }
 
-  .anni { display: grid; grid-template-columns: repeat(4, 1fr); gap: 7px; margin-top: 12px; }
-  @media (min-width: 520px) { .anni { grid-template-columns: repeat(7, 1fr); } }
-  .cella { position: relative; display: block; border: 1px solid var(--linea); border-radius: 11px;
-    padding: 6px 4px 4px; text-align: center; transition: background-color .25s, border-color .2s; cursor: text; }
-  .cella:focus-within { border-color: var(--oro); box-shadow: 0 0 0 3px rgba(190,162,100,.18); }
+  .anni { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 4px; margin-top: 8px; }
+  .cella { position: relative; display: block; border: 1px solid var(--linea); border-radius: 9px;
+    padding: 4px 0 3px; text-align: center; transition: background-color .25s, border-color .2s; cursor: text; }
+  .cella:focus-within { border-color: var(--oro); box-shadow: 0 0 0 3px rgba(190,162,100,.2); }
   .cella.piena { border-color: transparent; }
   .cella.errore { border-color: var(--errore); box-shadow: 0 0 0 3px rgba(180,71,58,.15); }
-  .anno { display: block; font-size: 11px; font-weight: 500; letter-spacing: .08em; color: var(--grigio); }
-  .cella input { width: 100%; border: 0; outline: none; background: transparent; text-align: center;
-    font: 500 20px/1.25 "Outfit", system-ui, sans-serif; color: var(--ink); padding: 0 12px 0 0; }
+  .anno { display: block; font-size: 9.5px; font-weight: 500; letter-spacing: .04em; color: var(--grigio); }
+  .cella input { width: 100%; border: 0; outline: none; background: transparent; text-align: center; padding: 0;
+    font: 500 15px/1.35 "Outfit", system-ui, sans-serif; color: var(--ink); }
   .cella input::placeholder { color: #D6D1C6; font-weight: 300; }
-  .cella .pct { position: absolute; right: 9px; bottom: 7px; font-size: 13px; color: var(--grigio); pointer-events: none; }
+  @media (min-width: 420px) { .cella input { font-size: 16.5px; } .anno { font-size: 10.5px; } .anni { gap: 6px; } }
 
-  .nota { width: 100%; margin-top: 10px; border: 0; border-radius: 9px; background: var(--lino);
+  .nota { width: 100%; margin-top: 8px; border: 0; border-radius: 9px; background: var(--lino);
     padding: 9px 11px; font: 400 14px/1.3 "Outfit", system-ui, sans-serif; color: var(--ink); outline: none; }
   .nota::placeholder { color: var(--grigio-chiaro); font-weight: 300; }
   .nota:focus { box-shadow: 0 0 0 2px rgba(190,162,100,.35); }
 
   .aggiungi { display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%;
-    margin-top: 14px; padding: 15px; border: 1.5px dashed #D9CFB8; border-radius: 16px; background: transparent;
+    margin-top: 14px; padding: 14px; border: 1.5px dashed #D9CFB8; border-radius: 14px; background: transparent;
     font: 500 15px "Outfit", system-ui, sans-serif; color: var(--oro-scuro); cursor: pointer; }
-  .aggiungi:active { background: #FBF8F1; }
   .ricomincia { display: block; margin: 26px auto 0; border: 0; background: none; color: var(--grigio-chiaro);
     font: 400 13px "Outfit", system-ui, sans-serif; text-decoration: underline; cursor: pointer; }
 
   .barra { position: fixed; left: 0; right: 0; bottom: 0; z-index: 5;
     padding: 12px 16px calc(12px + env(safe-area-inset-bottom));
-    background: rgba(247,244,238,.86); -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px);
+    background: rgba(247,244,238,.88); -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px);
     border-top: 1px solid rgba(232,227,216,.9); }
   .barra-in { max-width: 640px; margin: 0 auto; display: flex; align-items: center; gap: 12px; }
   .stato { flex: 1; font-size: 13px; color: var(--grigio); line-height: 1.3; }
@@ -88,7 +109,6 @@
   .btn { border: 0; border-radius: 13px; padding: 14px 22px; font: 600 15.5px "Outfit", system-ui, sans-serif;
     background: var(--ink); color: #fff; cursor: pointer; }
   .btn:active { transform: scale(.98); }
-  .btn[disabled] { opacity: .45; }
 
   .velo { position: fixed; inset: 0; background: rgba(43,41,38,.32); z-index: 9; opacity: 0;
     pointer-events: none; transition: opacity .2s; }
@@ -120,18 +140,29 @@
 <main>
   <p class="sopra">NOI DA PICCOLI</p>
   <h1><b>Sconti</b> per brand e anno</h1>
-  <p class="intro">Per ogni brand scrivi lo sconto sotto l'anno della collezione. Basta il numero. Casella vuota = nessuno sconto.</p>
+  <ul class="intro">
+    <li>Ci sono già <b>tutti i brand</b>, in ordine: prima quelli con più prodotti in negozio.</li>
+    <li>Sotto l'anno della collezione scrivi lo sconto: <b>basta il numero</b>.</li>
+    <li>Brand lasciato vuoto = vale la regola <b>Tutti gli altri brand</b>. Per «nessuno sconto» scrivi 0.</li>
+  </ul>
   <div class="esempio" aria-label="Esempio">Esempio: <b>MAYORAL</b> 2023 <span class="pill" data-t="20">20%</span> 2025 <span class="pill" data-t="10">10%</span></div>
 
   <section class="scheda base" id="base">
     <div class="base-tit">Tutti gli altri brand</div>
-    <div class="base-sub">Regola di base: vale per i brand che non metti nell'elenco</div>
+    <p class="base-sub">Regola di base: vale per ogni brand che lasci vuoto</p>
   </section>
 
+  <div class="cerca-barra">
+    <input class="cerca" id="cerca" type="search" placeholder="Cerca un brand" autocomplete="off" enterkeyhint="search" aria-label="Cerca un brand">
+    <button class="chip" id="solo" type="button" aria-pressed="false">Compilati <b id="ncomp">0</b></button>
+  </div>
+
   <div id="lista"></div>
+  <p class="vuoto-ricerca" id="nessuno" hidden>Nessun brand trovato. Se manca, aggiungilo qui sotto.</p>
+  <div id="extra"></div>
   <button class="aggiungi" id="aggiungi" type="button">
     <svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><path d="M9 3v12M3 9h12" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
-    Aggiungi un brand
+    Manca un brand? Aggiungilo
   </button>
   <button class="ricomincia" id="ricomincia" type="button">Ricomincia da capo</button>
 </main>
@@ -164,18 +195,22 @@
 <script>
 (function () {
   var ANNI = NDPSconti.ANNI;
-  var CHIAVE = "ndp-sconti-brand-v1";
+  var CHIAVE = "ndp-sconti-brand-v2";
   var PDFLIB = "https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js";
-  var BRAND = ["ABUELA TATA","ALESSANDRO MARTINEZ","ALVIERO MARTINI","ARCENCIEL","ARTIGIANBABY","BABIDU","BABY CHICK","BABY GI","BABYBOLL","BABYDIF","BAGY LU","BARCELLINO","BÉBÉ DI ALMY","BEBE'MARGO'","BEL PICCINO","BELLA BRILLI","BIDIBIMBO","BIMBALO'","BIRILLINI","BISOU","BLOOM","BOBOLI","BUFI","CAMINITO","CANADA HOUSE","CAPPELLERIA ITALIANA","CARLO PIGNATELLI","CARRERA","CESARE PACIOTTI","CHARO","CHICCO","COCOTE","CUA-CUAK","CURTO","DAMPER DAN","DEL SUR","DEOLINDA","DILU'","ELLEPI","EVI","FINA ENJERIQUE","FIRST BABY","FOFETTES","FS BABY","GIO HIGUAMY","I DELFI","ICEBERG","IL CORREDINO","IRGE","ISABEL","JACQUES E MONIQUE","JO MILANO","JOSE' VARON","JUJUBEBE'","JULIANA","KIDIWI","KLAYDI","KOKONOKO","LA FATINA","LALALU'","LARANJINHA","LAURA BIAGIOTTI","LE CHICCHE","LE COCONNE","LES ENFANTS DE GISELE","LOVE BAG","MAGIL","MAIOLICA","MAIOS KIDS","MARCH","MARLU","MAYORAL","MIMOSA","MINI JA","MINI JATSI","MINIBANDA","MIRANDA","MLR-MAISON LES ROUCHES","MOM PUPPIES","MYSWEETPIE","NALU'","NANCY","NANNAFRUFRU'","NAZARENO GABRIELLI","NINNAOH","NISERET","NOI DA PICCOLI","PAPPA E LATTE","PASTELLO","PATACHOU","PETIT","PETIT POSH","PETITE INDI","PICCOLA DESI","PICCOLA GIUGGIOLA","PICCOLE CANAGLIE","PICCOLE MONELLE","POMPETITPOM","PONTO POR PONTO","PRETA.POR.TE","PURETE'","RIC-AMIAMOCI","RIGOLA'","SA.BA CALZATURE","SARDON","SARTORIA DEI PICCOLI","SERGENT MAJOR","SNUG","SOFIJA","STELLA","STREET MONKEY","TNY","YATSI BABY","ZOYSAN'"];
+  // Tutti i brand del negozio, ordinati per prodotti attivi (da brand_negozio.json, doppioni gia' uniti)
+  var BRAND = ["MAYORAL","JULIANA","DEOLINDA","MARLU","ISABEL","SARDON","BABY GI","PONTO POR PONTO","NOI DA PICCOLI","CARLO PIGNATELLI","BARCELLINO","PAPPA E LATTE","NINNAOH","DEL SUR","CHARO","BABIDU","LALALU'","GIO HIGUAMY","LE COCONNE","MINIBANDA","LE CHICCHE","BEBE'MARGO'","SARTORIA DEI PICCOLI","JO MILANO","DAMPER DAN","JUJUBEBE'","STREET MONKEY","FOFETTES","NANNAFRUFRU'","PURETE'","CUA-CUAK","I DELFI","BABYDIF","CAMINITO","BUFI","STELLA","CANADA HOUSE","PICCOLA GIUGGIOLA","PATACHOU","BABYBOLL","BELLA BRILLI","MINI JATSI","MLR-MAISON LES ROUCHES","RIC-AMIAMOCI","BLOOM","BABY CHICK","PETIT","BISOU","MAIOS KIDS","ARTIGIANBABY","ALESSANDRO MARTINEZ","TNY","JACQUES E MONIQUE","PASTELLO","CESARE PACIOTTI","MIMOSA","KIDIWI","NALU'","COCOTE","FIRST BABY","DILU'","LARANJINHA","MAIOLICA","ABUELA TATA","IL CORREDINO","BÉBÉ DI ALMY","CURTO","MAGIL","BOBOLI","CAPPELLERIA ITALIANA","PICCOLA DESI","ZOYSAN'","JOSE' VARON","MINI JA","PICCOLE CANAGLIE","PICCOLE MONELLE","CARRERA","SOFIJA","CHICCO","KLAIDY","EVI","FS BABY","PETIT POSH","BIMBALO'","MARCH","SERGENT MAJOR","YATSI","BAGY LU","FINA EJERIQUE","KLAIADÌ","MIRANDA","ICEBERG","LA FATINA","ARCENCIEL","ELLEPI","KOKONOKO","LES ENFANTS DE GISELE","NISERET","PETITE INDI","PRETA.POR.TE","SA.BA CALZATURE","SNUG","ALVIERO MARTINI","BEL PICCINO","BIDIBIMBO","BIRILLINI","IRGE","LAURA BIAGIOTTI","LOVE BAG","MOM PUPPIES","MYSWEETPIE","NANCY","NAZARENO GABRIELLI","POMPETITPOM","RIGOLA'"];
 
-  function vuoto() { return { nome: "", sconti: ANNI.map(function () { return ""; }), nota: "" }; }
+  function vuoti() { return ANNI.map(function () { return ""; }); }
   function $(id) { return document.getElementById(id); }
+  function chiave(s) { return String(s).normalize("NFD").replace(/[̀-ͯ]/g, "").toUpperCase(); }
 
   // ---- stato salvato sul telefono (se il browser lo permette) ----
   var stato = null;
-  try { stato = JSON.parse(localStorage.getItem(CHIAVE)); } catch (e) {}
-  if (!stato || !stato.base || !Array.isArray(stato.brand)) stato = { base: vuoto(), brand: [vuoto()] };
-  if (!stato.brand.length) stato.brand.push(vuoto());
+  try { stato = JSON.parse(localStorage.getItem(CHIAVE)); localStorage.removeItem("ndp-sconti-brand-v1"); } catch (e) {}
+  if (!stato || !stato.base || !stato.valori || !Array.isArray(stato.extra)) {
+    stato = { base: { sconti: vuoti(), nota: "" }, valori: {}, extra: [] };
+  }
+  function valoriDi(nome) { return stato.valori[nome] || (stato.valori[nome] = { sconti: vuoti(), nota: "" }); }
   function salva() {
     try { localStorage.setItem(CHIAVE, JSON.stringify(stato)); } catch (e) {}
     aggiornaStato();
@@ -187,101 +222,150 @@
     var c = NDPSconti.tinta(n);
     return c ? "rgb(" + c.map(function (x) { return Math.round(x * 255); }).join(",") + ")" : "";
   }
-  function haDati(b) { return b.nome.trim() || b.nota.trim() || b.sconti.some(function (s) { return s !== ""; }); }
+  function haDati(b) { return !!(b && (b.nota.trim() || b.sconti.some(function (s) { return s !== ""; }))); }
   var tAvviso;
   function avviso(msg) {
     var a = $("avviso"); a.textContent = msg; a.classList.add("su");
     clearTimeout(tAvviso); tAvviso = setTimeout(function () { a.classList.remove("su"); }, 2600);
   }
   document.querySelectorAll(".esempio .pill").forEach(function (p) { p.style.background = colore(+p.dataset.t); });
+  function campiVisibili() {
+    return Array.prototype.filter.call(document.querySelectorAll(".cella input, .nome-input, .nota"),
+      function (el) { return el.offsetParent !== null; });
+  }
+  function avanti(e) {
+    if (e.key !== "Enter") return;
+    e.preventDefault();
+    var tutti = campiVisibili(), dopo = tutti[tutti.indexOf(e.target) + 1];
+    if (dopo) dopo.focus(); else e.target.blur();
+  }
 
-  var dl = document.createElement("datalist"); dl.id = "elenco-brand";
-  BRAND.forEach(function (b) { var o = document.createElement("option"); o.value = b; dl.appendChild(o); });
-  document.body.appendChild(dl);
-
-  // ---- costruzione delle schede ----
-  function griglia(dati) {
+  // ---- caselle degli anni: mentre scrivi il numero, poi "20%" ----
+  function griglia(dati, scheda) {
     var g = document.createElement("div"); g.className = "anni";
     ANNI.forEach(function (anno, i) {
       var l = document.createElement("label"); l.className = "cella";
-      l.innerHTML = '<span class="anno">' + anno + '</span><input type="text" inputmode="decimal" enterkeyhint="next" maxlength="4" placeholder="–" aria-label="Sconto ' + anno + '"><span class="pct">%</span>';
+      l.innerHTML = '<span class="anno">' + anno + '</span><input type="text" inputmode="decimal" enterkeyhint="next" maxlength="5" placeholder="–" aria-label="Sconto ' + anno + '">';
       var inp = l.querySelector("input");
-      inp.value = dati.sconti[i];
+      function mostra() { var v = dati.sconti[i]; inp.value = v === "" ? "" : v.replace(".", ",") + "%"; }
       function dipingi() {
-        var n = numero(inp.value);
-        var errato = inp.value !== "" && (isNaN(n) || n > 100);
+        var n = numero(dati.sconti[i]);
+        var errato = dati.sconti[i] !== "" && (isNaN(n) || n > 100);
         l.classList.toggle("errore", errato);
         l.classList.toggle("piena", !errato && n > 0);
         l.style.backgroundColor = errato ? "" : colore(n);
+        if (scheda) scheda.classList.toggle("fatta", haDati(dati));
       }
+      inp.addEventListener("focus", function () {
+        inp.value = dati.sconti[i];
+        setTimeout(function () { try { inp.select(); } catch (e) {} }, 0);
+      });
+      inp.addEventListener("blur", mostra);
       inp.addEventListener("input", function () {
         var v = inp.value.replace(/[^0-9.,]/g, "").slice(0, 4);
         if (v !== inp.value) inp.value = v;
         dati.sconti[i] = v; dipingi(); salva();
         if (numero(v) > 100) avviso("Lo sconto va da 0 a 100");
       });
-      inp.addEventListener("keydown", function (e) {
-        if (e.key !== "Enter") return;
-        e.preventDefault();
-        var tutti = Array.prototype.slice.call(document.querySelectorAll("input"));
-        var dopo = tutti[tutti.indexOf(inp) + 1];
-        if (dopo) dopo.focus(); else inp.blur();
-      });
-      dipingi();
+      inp.addEventListener("keydown", avanti);
+      mostra(); dipingi();
       g.appendChild(l);
     });
     return g;
   }
 
-  function campoNota(dati) {
+  function campoNota(dati, scheda, aperta) {
     var n = document.createElement("input");
     n.className = "nota"; n.type = "text"; n.maxLength = 40; n.placeholder = "Nota (facoltativa)";
-    n.value = dati.nota; n.enterKeyHint = "done";
-    n.addEventListener("input", function () { dati.nota = n.value; salva(); });
+    n.value = dati.nota; n.enterKeyHint = "next"; n.hidden = !aperta && !dati.nota;
+    n.addEventListener("input", function () {
+      dati.nota = n.value; salva();
+      if (scheda) scheda.classList.toggle("fatta", haDati(dati));
+    });
+    n.addEventListener("keydown", avanti);
     return n;
   }
 
+  // ---- regola di base ----
   var base = $("base");
-  base.appendChild(griglia(stato.base));
-  base.appendChild(campoNota(stato.base));
+  base.appendChild(griglia(stato.base, null));
+  base.appendChild(campoNota(stato.base, null, true));
 
-  function schedaBrand(dati) {
+  // ---- elenco dei brand, gia' in ordine ----
+  var schede = [];
+  var frammento = document.createDocumentFragment();
+  BRAND.forEach(function (nome, i) {
+    var dati = valoriDi(nome);
     var s = document.createElement("section"); s.className = "scheda";
-    s.innerHTML = '<div class="testa"><span class="num"></span>' +
-      '<input class="nome" type="text" list="elenco-brand" autocapitalize="characters" autocomplete="off" spellcheck="false" enterkeyhint="next" maxlength="28" placeholder="Nome del brand">' +
+    s.innerHTML = '<div class="testa"><span class="num">' + (i + 1) + '</span><h3 class="nome"></h3>' +
+      '<button class="link" type="button">+ nota</button></div>';
+    s.querySelector(".nome").textContent = nome;
+    s.appendChild(griglia(dati, s));
+    var nota = campoNota(dati, s, false);
+    s.appendChild(nota);
+    var link = s.querySelector(".link");
+    link.hidden = !nota.hidden;
+    link.addEventListener("click", function () { nota.hidden = false; link.hidden = true; nota.focus(); });
+    s.classList.toggle("fatta", haDati(dati));
+    schede.push({ el: s, nome: nome, chiave: chiave(nome), dati: dati });
+    frammento.appendChild(s);
+  });
+  $("lista").appendChild(frammento);
+
+  // ---- brand aggiunti a mano ----
+  function schedaExtra(dati) {
+    var s = document.createElement("section"); s.className = "scheda";
+    s.innerHTML = '<div class="testa"><span class="num">+</span>' +
+      '<input class="nome-input" type="text" autocapitalize="characters" autocomplete="off" spellcheck="false" enterkeyhint="next" maxlength="28" placeholder="Nome del brand">' +
       '<button class="togli" type="button" aria-label="Togli questo brand"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M10 11v6M14 11v6M6 7l1 12a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2l1-12M9 7V4h6v3"/></svg></button></div>';
-    var nome = s.querySelector(".nome");
+    var nome = s.querySelector(".nome-input");
     nome.value = dati.nome;
     nome.addEventListener("input", function () { dati.nome = nome.value; salva(); });
-    nome.addEventListener("keydown", function (e) {
-      if (e.key === "Enter") { e.preventDefault(); s.querySelector(".cella input").focus(); }
-    });
+    nome.addEventListener("keydown", avanti);
     s.querySelector(".togli").addEventListener("click", function () {
-      if (haDati(dati) && !confirm("Togliere " + (dati.nome.trim().toUpperCase() || "questo brand") + "?")) return;
-      stato.brand.splice(stato.brand.indexOf(dati), 1);
-      if (!stato.brand.length) stato.brand.push(vuoto());
-      disegnaLista(); salva();
+      if ((dati.nome.trim() || haDati(dati)) && !confirm("Togliere " + (dati.nome.trim().toUpperCase() || "questo brand") + "?")) return;
+      stato.extra.splice(stato.extra.indexOf(dati), 1);
+      s.remove(); salva();
     });
-    s.appendChild(griglia(dati));
-    s.appendChild(campoNota(dati));
+    s.appendChild(griglia(dati, s));
+    s.appendChild(campoNota(dati, s, true));
+    s.classList.toggle("fatta", haDati(dati));
     return s;
   }
-
-  function disegnaLista() {
-    var l = $("lista"); l.innerHTML = "";
-    stato.brand.forEach(function (b, i) {
-      var s = schedaBrand(b);
-      s.querySelector(".num").textContent = i + 1;
-      l.appendChild(s);
-    });
-  }
-  disegnaLista();
-
+  stato.extra.forEach(function (d) { $("extra").appendChild(schedaExtra(d)); });
   $("aggiungi").addEventListener("click", function () {
-    stato.brand.push(vuoto()); disegnaLista(); salva();
-    var ultima = $("lista").lastElementChild;
-    ultima.scrollIntoView({ behavior: "smooth", block: "center" });
-    ultima.querySelector(".nome").focus({ preventScroll: true });
+    var d = { nome: "", sconti: vuoti(), nota: "" };
+    stato.extra.push(d);
+    var s = schedaExtra(d);
+    $("extra").appendChild(s); salva();
+    s.scrollIntoView({ behavior: "smooth", block: "center" });
+    s.querySelector(".nome-input").focus({ preventScroll: true });
+  });
+
+  // ---- ricerca e filtro "solo compilati" ----
+  var soloCompilati = false;
+  function filtra() {
+    var q = chiave($("cerca").value.trim());
+    var visibili = 0;
+    schede.forEach(function (x) {
+      var ok = (!q || x.chiave.indexOf(q) !== -1) && (!soloCompilati || haDati(stato.valori[x.nome]));
+      x.el.hidden = !ok; if (ok) visibili++;
+    });
+    base.hidden = !!q || soloCompilati;
+    $("nessuno").hidden = visibili > 0 || (!q && !soloCompilati);
+  }
+  $("cerca").addEventListener("input", filtra);
+  $("cerca").addEventListener("keydown", function (e) {
+    if (e.key !== "Enter") return;
+    e.preventDefault();
+    var prima = schede.find(function (x) { return !x.el.hidden; });
+    if (prima) prima.el.querySelector(".cella input").focus();
+  });
+  $("solo").addEventListener("click", function () {
+    soloCompilati = !soloCompilati;
+    $("solo").setAttribute("aria-pressed", soloCompilati);
+    filtra();
+    window.scrollTo({ top: $("cerca").getBoundingClientRect().top + window.scrollY - 70, behavior: "smooth" });
   });
 
   $("ricomincia").addEventListener("click", function () {
@@ -290,32 +374,33 @@
     location.reload();
   });
 
-  function compilati() { return stato.brand.filter(haDati); }
+  // ---- cosa si invia: brand compilati nell'ordine dell'elenco, poi quelli aggiunti ----
+  function compilati() {
+    var lista = BRAND.filter(function (nome) { return haDati(stato.valori[nome]); }).map(function (nome) {
+      return { nome: nome, sconti: stato.valori[nome].sconti, nota: stato.valori[nome].nota };
+    });
+    return lista.concat(stato.extra.filter(function (d) { return d.nome.trim() && haDati(d); }));
+  }
   function aggiornaStato() {
     var n = compilati().length;
+    $("ncomp").textContent = n;
     $("stato").innerHTML = n ? "<b>" + n + "</b> brand compilat" + (n === 1 ? "o" : "i") + "<br>salvati sul telefono"
                              : "Compila e premi <b>Invia</b>";
   }
   aggiornaStato();
 
-  // ---- invio ----
   function controlla() {
-    var tutti = [stato.base].concat(stato.brand);
+    var tutti = [stato.base].concat(Object.keys(stato.valori).map(function (k) { return stato.valori[k]; }), stato.extra);
     for (var i = 0; i < tutti.length; i++) {
       for (var j = 0; j < ANNI.length; j++) {
         var v = tutti[i].sconti[j], n = numero(v);
         if (v !== "" && (isNaN(n) || n > 100)) return "C'è uno sconto non valido (" + v + "): va da 0 a 100";
       }
     }
-    var senzaNome = stato.brand.filter(function (b) { return haDati(b) && !b.nome.trim(); }).length;
-    if (senzaNome) return "Manca il nome di " + (senzaNome === 1 ? "un brand" : senzaNome + " brand");
+    if (stato.extra.some(function (d) { return haDati(d) && !d.nome.trim(); })) return "Manca il nome di un brand aggiunto";
     var baseVuota = stato.base.sconti.every(function (s) { return s === ""; });
     if (!compilati().length && baseVuota) return "Scrivi almeno uno sconto";
     return "";
-  }
-
-  function datiPuliti() {
-    return { base: stato.base, brand: compilati() };
   }
 
   function caricaPdfLib() {
@@ -337,18 +422,21 @@
   }
 
   function apriFoglio() {
+    if (document.activeElement && document.activeElement.blur) document.activeElement.blur();
     var problema = controlla();
     if (problema) { avviso(problema); return; }
     var n = compilati().length;
+    var conBase = stato.base.sconti.some(function (s) { return s !== ""; });
     $("foglio-sub").textContent = n > NDPSconti.RIGHE_PDF
       ? n + " brand: nel PDF ci stanno i primi " + NDPSconti.RIGHE_PDF + ", il messaggio li contiene tutti."
-      : (n ? n + (n === 1 ? " brand" : " brand") + " più la regola di base." : "Solo la regola di base.");
+      : (n ? n + (n === 1 ? " brand compilato" : " brand compilati") + (conBase ? " più la regola di base." : ".")
+           : "Solo la regola di base.");
     $("velo").classList.add("aperto"); $("foglio").classList.add("aperto");
     // Il PDF si prepara subito: il tasto "Invia il PDF" poi condivide all'istante (iPhone lo richiede)
     filePronto = null;
     $("invia-pdf").disabled = true; $("invia-pdf-tit").textContent = "Preparo il PDF…";
     Promise.all([caricaPdfLib(), fetch("Sconti_per_brand.pdf").then(function (r) { return r.arrayBuffer(); })])
-      .then(function (r) { return NDPSconti.compilaPdf(r[0], r[1], datiPuliti()); })
+      .then(function (r) { return NDPSconti.compilaPdf(r[0], r[1], { base: stato.base, brand: compilati() }); })
       .then(function (bytes) {
         filePronto = new File([bytes], nomeFile(), { type: "application/pdf" });
         $("invia-pdf").disabled = false; $("invia-pdf-tit").textContent = "Invia il PDF compilato";
